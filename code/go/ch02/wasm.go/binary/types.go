@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+// wasm 值类型
 const (
 	ValTypeI32 ValType = 0x7F // i32
 	ValTypeI64 ValType = 0x7E // i64
@@ -20,24 +21,30 @@ const (
 
 type ValType = byte
 type BlockType = int32
+
+// 内存类型只需描述内存的页数限制，定义成限制的别名即可
 type MemType = Limits
 
+// 定义函数类型结构体
 type FuncType struct {
 	Tag         byte
 	ParamTypes  []ValType
 	ResultTypes []ValType
 }
 
+// 表类型需要描述表的元素类型和元素数量的限制
 type TableType struct {
 	ElemType byte
 	Limits   Limits
 }
 
+// 全局变量类型描述全局变量的类型和可变性
 type GlobalType struct {
 	ValType ValType
 	Mut     byte
 }
 
+// 限制类型用于描述表的元素数量或内存页数的上下限
 type Limits struct {
 	Tag byte
 	Min uint32

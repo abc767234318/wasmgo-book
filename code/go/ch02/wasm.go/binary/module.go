@@ -1,5 +1,6 @@
 package binary
 
+// 魔数和版本号，前八字节
 const (
 	MagicNumber = 0x6D736100 // `\0asm`
 	Version     = 0x00000001 // 1
@@ -33,14 +34,15 @@ const (
 	ExportTagGlobal = 3
 )
 
+// 索引空间
 type (
 	TypeIdx   = uint32
 	FuncIdx   = uint32
 	TableIdx  = uint32
 	MemIdx    = uint32
 	GlobalIdx = uint32
-	LocalIdx  = uint32
-	LabelIdx  = uint32
+	LocalIdx  = uint32 // 函数的内部变量索引空间(包含函数参数和局部变量)
+	LabelIdx  = uint32 // 函数跳转标签索引空间
 )
 
 type Module struct {
@@ -77,6 +79,7 @@ type CustomSec struct {
 	Bytes []byte // TODO
 }
 
+// 导入项的结构定义
 type Import struct {
 	Module string
 	Name   string
