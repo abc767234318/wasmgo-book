@@ -1,6 +1,6 @@
-package binary
+ï»¿package binary
 
-// Ä§ÊıºÍ°æ±¾ºÅ£¬Ç°°Ë×Ö½Ú
+// é­”æ•°å’Œç‰ˆæœ¬å·ï¼Œå‰å…«å­—èŠ‚
 const (
 	MagicNumber = 0x6D736100 // `\0asm`
 	Version     = 0x00000001 // 1
@@ -34,15 +34,15 @@ const (
 	ExportTagGlobal = 3
 )
 
-// Ë÷Òı¿Õ¼ä
+// ç´¢å¼•ç©ºé—´
 type (
 	TypeIdx   = uint32
 	FuncIdx   = uint32
 	TableIdx  = uint32
 	MemIdx    = uint32
 	GlobalIdx = uint32
-	LocalIdx  = uint32 // º¯ÊıµÄÄÚ²¿±äÁ¿Ë÷Òı¿Õ¼ä(°üº¬º¯Êı²ÎÊıºÍ¾Ö²¿±äÁ¿)
-	LabelIdx  = uint32 // º¯ÊıÌø×ª±êÇ©Ë÷Òı¿Õ¼ä
+	LocalIdx  = uint32 // å‡½æ•°çš„å†…éƒ¨å˜é‡ç´¢å¼•ç©ºé—´(åŒ…å«å‡½æ•°å‚æ•°å’Œå±€éƒ¨å˜é‡)
+	LabelIdx  = uint32 // å‡½æ•°è·³è½¬æ ‡ç­¾ç´¢å¼•ç©ºé—´
 )
 
 type Module struct {
@@ -79,12 +79,14 @@ type CustomSec struct {
 	Bytes []byte // TODO
 }
 
-// µ¼ÈëÏîµÄ½á¹¹¶¨Òå
+// å¯¼å…¥é¡¹çš„ç»“æ„å®šä¹‰
 type Import struct {
 	Module string
 	Name   string
 	Desc   ImportDesc
 }
+
+// goä¸­ä¸æ”¯æŒCè¯­è¨€çš„è”åˆä½“ï¼Œæ‰€ä»¥æŠŠå››ç§ç±»å‹éƒ½åŠ è¿›æ¥äº†ï¼Œå½“ç„¶è§£æçš„æ—¶å€™åªæœ‰ä¸€ä¸ªæˆå‘˜æœ‰æ„ä¹‰
 type ImportDesc struct {
 	Tag      byte
 	FuncType TypeIdx    // tag=0
