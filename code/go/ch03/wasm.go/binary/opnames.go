@@ -2,6 +2,7 @@ package binary
 
 var opnames = make([]string, 256)
 
+// 定义了一个指令到指令真实助记符的切片映射
 func init() {
 	opnames[Unreachable] = "unreachable"
 	opnames[Nop] = "nop"

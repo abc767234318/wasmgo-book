@@ -1,5 +1,6 @@
 package binary
 
+// 解码无符号整数，可同时处理32 64位整数，由参数size控制，第一个返回值为解码后的整数，第二个返回值是整数实际占字节数
 // https://en.wikipedia.org/wiki/LEB128#Decode_unsigned_integer
 func decodeVarUint(data []byte, size int) (uint64, int) {
 	result := uint64(0)
@@ -20,6 +21,7 @@ func decodeVarUint(data []byte, size int) (uint64, int) {
 	panic(errUnexpectedEnd)
 }
 
+// 解码有符号整数
 // https://en.wikipedia.org/wiki/LEB128#Decode_signed_integer
 func decodeVarInt(data []byte, size int) (int64, int) {
 	result := int64(0)

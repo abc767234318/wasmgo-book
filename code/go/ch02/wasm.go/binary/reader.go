@@ -9,6 +9,7 @@ import (
 	"unicode/utf8"
 )
 
+// 定义一个结构体，封装二进制模块解码逻辑
 type wasmReader struct {
 	data []byte
 }
@@ -38,11 +39,14 @@ func Decode(data []byte) (module Module, err error) {
 	return
 }
 
+// func关键字和方法名之间的接收器，是给结构体定义方法的特殊写法，类似于结构体成员函数
+// 辅助函数，用于查看剩余的字节数
 func (reader *wasmReader) remaining() int {
 	return len(reader.data)
 }
 
 // fixed length value
+// 读字节
 func (reader *wasmReader) readByte() byte {
 	if len(reader.data) < 1 {
 		panic(errUnexpectedEnd)
@@ -51,6 +55,7 @@ func (reader *wasmReader) readByte() byte {
 	reader.data = reader.data[1:]
 	return b
 }
+// 读32位整数
 func (reader *wasmReader) readU32() uint32 {
 	if len(reader.data) < 4 {
 		panic(errUnexpectedEnd)
@@ -59,6 +64,7 @@ func (reader *wasmReader) readU32() uint32 {
 	reader.data = reader.data[4:]
 	return n
 }
+// 读32位浮点数
 func (reader *wasmReader) readF32() float32 {
 	if len(reader.data) < 4 {
 		panic(errUnexpectedEnd)
@@ -67,6 +73,7 @@ func (reader *wasmReader) readF32() float32 {
 	reader.data = reader.data[4:]
 	return math.Float32frombits(n)
 }
+// 读64位浮点数
 func (reader *wasmReader) readF64() float64 {
 	if len(reader.data) < 8 {
 		panic(errUnexpectedEnd)
@@ -76,17 +83,20 @@ func (reader *wasmReader) readF64() float64 {
 	return math.Float64frombits(n)
 }
 
-// variable length value
+// variable length value 读取变长整数
+// 无符号，无符号变长整数主要是用来编码索引和向量长度的
 func (reader *wasmReader) readVarU32() uint32 {
 	n, w := decodeVarUint(reader.data, 32)
 	reader.data = reader.data[w:]
 	return uint32(n)
 }
+// 有符号
 func (reader *wasmReader) readVarS32() int32 {
 	n, w := decodeVarInt(reader.data, 32)
 	reader.data = reader.data[w:]
 	return int32(n)
 }
+// 有符号
 func (reader *wasmReader) readVarS64() int64 {
 	n, w := decodeVarInt(reader.data, 64)
 	reader.data = reader.data[w:]
@@ -94,6 +104,7 @@ func (reader *wasmReader) readVarS64() int64 {
 }
 
 // bytes & name
+// 读取字节
 func (reader *wasmReader) readBytes() []byte {
 	n := reader.readVarU32()
 	if len(reader.data) < int(n) {
@@ -103,6 +114,7 @@ func (reader *wasmReader) readBytes() []byte {
 	reader.data = reader.data[n:]
 	return bytes
 }
+// 读取名字
 func (reader *wasmReader) readName() string {
 	data := reader.readBytes()
 	if !utf8.Valid(data) {
@@ -221,6 +233,7 @@ func (reader *wasmReader) readImport() Import {
 		Name:   reader.readName(),
 		Desc:   reader.readImportDesc(),
 	}
+	
 }
 func (reader *wasmReader) readImportDesc() ImportDesc {
 	desc := ImportDesc{Tag: reader.readByte()}

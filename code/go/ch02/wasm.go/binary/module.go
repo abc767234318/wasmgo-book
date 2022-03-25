@@ -21,12 +21,15 @@ const (
 	SecDataID
 )
 
+// 导入段tag常量
 const (
 	ImportTagFunc   = 0
 	ImportTagTable  = 1
 	ImportTagMem    = 2
 	ImportTagGlobal = 3
 )
+
+// 导出段tag 常量
 const (
 	ExportTagFunc   = 0
 	ExportTagTable  = 1
@@ -74,6 +77,7 @@ type Module struct {
 //type CodeSec   = []Code
 //type DataSec   = []Data
 
+// 自定义段结构
 type CustomSec struct {
 	Name  string
 	Bytes []byte // TODO
@@ -95,11 +99,13 @@ type ImportDesc struct {
 	Global   GlobalType // tag=3
 }
 
+// 全局段类型，全局项需要指定全局变量类型、初始值
 type Global struct {
 	Type GlobalType
 	Init Expr
 }
 
+// 导出段类型，函数、表、内存、全局变量
 type Export struct {
 	Name string
 	Desc ExportDesc
@@ -109,21 +115,24 @@ type ExportDesc struct {
 	Idx uint32
 }
 
+// 元素段结构
 type Elem struct {
 	Table  TableIdx
 	Offset Expr
 	Init   []FuncIdx
 }
 
+// 代码段结构
 type Code struct {
-	Locals []Locals
-	Expr   Expr
+	Locals []Locals // 局部变量
+	Expr   Expr // 字节码
 }
 type Locals struct {
 	N    uint32
 	Type ValType
 }
 
+// 数据段结构
 type Data struct {
 	Mem    MemIdx
 	Offset Expr

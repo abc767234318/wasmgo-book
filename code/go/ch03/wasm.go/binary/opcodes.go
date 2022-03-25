@@ -1,6 +1,7 @@
 package binary
 
 // Opcodes
+// 定义指令集字节码
 const (
 	Unreachable       = 0x00 // unreachable
 	Nop               = 0x01 // nop
